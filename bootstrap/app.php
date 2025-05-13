@@ -51,5 +51,9 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
-
+$app->booted(function() use ($app) {
+    $app['router']->group(['namespace' => 'App\Http\Controllers'], function ($router) {
+        require __DIR__.'/../routes/web.php';
+    });
+});
 return $app;

@@ -156,8 +156,6 @@
                 </h2>
             </div>
 
-            
-
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
 
@@ -174,12 +172,6 @@
                                onfocus="this.placeholder=''" 
                                onblur="this.placeholder='user@domain.com'">
                     </div>
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-400 flex items-center font-mono">
-                            <span class="text-red-400 mr-2">!</span>
-                            {{ $message }}
-                        </p>
-                    @enderror
                 </div>
 
                 <!-- Поле Пароля -->
@@ -205,12 +197,6 @@
                         <span id="security-indicator" class="text-xs font-mono text-cyan-400">SECURITY LEVEL: </span>
                         <span id="security-level" class="text-xs font-mono ml-1 text-red-400">NULL</span>
                     </div>
-                    @error('password')
-                        <p class="mt-1 text-sm text-red-400 flex items-center font-mono">
-                            <span class="text-red-400 mr-2">!</span>
-                            {{ $message }}
-                        </p>
-                    @enderror
                 </div>
 
                 <!-- Запомнить меня и Забыли пароль -->

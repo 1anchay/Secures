@@ -155,22 +155,24 @@
                     ВХОД В СИСТЕМУ
                 </h2>
             </div>
-<!-- Добавьте этот блок вывода ошибок -->
-@if($errors->any())
-<div class="mb-4 p-4 bg-red-900/30 border border-red-500 text-red-400 rounded-lg font-mono">
-    <div class="flex items-center">
-        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        ОШИБКА АУТЕНТИФИКАЦИИ
-    </div>
-    <ul class="list-disc list-inside mt-2 text-sm">
-        @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+
+            <!-- Вывод ошибок -->
+            @if($errors->any())
+                <div class="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-400 rounded-lg font-mono">
+                    <div class="flex items-center">
+                        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        ОШИБКА АУТЕНТИФИКАЦИИ
+                    </div>
+                    <ul class="list-disc list-inside mt-2 text-sm">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
 
@@ -187,6 +189,12 @@
                                onfocus="this.placeholder=''" 
                                onblur="this.placeholder='user@domain.com'">
                     </div>
+                    @error('email')
+                        <p class="mt-1 text-sm text-red-400 flex items-center font-mono">
+                            <span class="text-red-400 mr-2">!</span>
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Поле Пароля -->
@@ -212,6 +220,12 @@
                         <span id="security-indicator" class="text-xs font-mono text-cyan-400">SECURITY LEVEL: </span>
                         <span id="security-level" class="text-xs font-mono ml-1 text-red-400">NULL</span>
                     </div>
+                    @error('password')
+                        <p class="mt-1 text-sm text-red-400 flex items-center font-mono">
+                            <span class="text-red-400 mr-2">!</span>
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Запомнить меня и Забыли пароль -->
@@ -269,28 +283,7 @@
         </div>
     </div>
 </div>
-<script>
-document.querySelector('form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const response = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    });
-    
-    if (!response.ok) {
-        const errors = await response.json();
-        console.error('Ошибки входа:', errors);
-        alert(Object.values(errors.errors).join('\n'));
-    } else {
-        window.location.reload();
-    }
-});
-</script>
+
 <script>
     // Генерация бинарного дождя
     function createBinaryRain() {
@@ -376,9 +369,6 @@ document.querySelector('form').addEventListener('submit', async (e) => {
         animation: float 6s ease-in-out 2s infinite;
     }
 </style>
-<div class="mt-4 p-4 bg-gray-800/50 text-xs font-mono">
-    <div>Session: {{ json_encode(session()->all()) }}</div>
-    <div class="mt-2">Old Input: {{ json_encode(old()) }}</div>
-</div>
+
 @include('footer')
 @endsection

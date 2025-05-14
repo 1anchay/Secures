@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     ReactController,
@@ -12,7 +13,7 @@ use App\Http\Controllers\Auth\{
     AuthenticatedSessionController,
     RegisteredUserController,
     ForgotPasswordController,
-    ResetPasswordController,
+    ResetPasswordController
 };
 
 /*
@@ -24,7 +25,7 @@ use App\Http\Controllers\Auth\{
 // Главная и статические страницы
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
-    Route::get('/home', 'index')->name('home.alt');
+    Route::get('/home', 'index')->name('home.alt'); // Можно удалить, если не используется
     Route::get('/store', 'store')->name('store');
     Route::get('/politika', 'politika')->name('politika');
     Route::get('/prava', 'prava')->name('prava');
@@ -38,13 +39,13 @@ Route::middleware('guest')->group(function () {
     // Аутентификация
     Route::controller(AuthenticatedSessionController::class)->group(function () {
         Route::get('login', 'create')->name('login');
-        Route::post('login', 'store');
+        Route::post('login', 'store')->name('login.post');
     });
     
     // Регистрация
     Route::controller(RegisteredUserController::class)->group(function () {
         Route::get('register', 'create')->name('register');
-        Route::post('register', 'store');
+        Route::post('register', 'store')->name('register.post');
     });
     
     // Сброс пароля
@@ -59,31 +60,43 @@ Route::middleware('guest')->group(function () {
     });
 });
 
+// Аутентифицированные маршруты
 Route::middleware(['auth'])->group(function () {
     // Профиль
-    Route::controller(ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
-        Route::get('/edit', 'edit')->name('edit');
-        Route::put('/update', 'update')->name('update');
-        Route::post('/remove-avatar', 'removeAvatar')->name('remove-avatar');
-        Route::post('/update-avatar', 'updateAvatar')->name('update-avatar'); // Добавьте эту строку
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::controller(ProfileController::class)->group(function () {
+            Route::get('/edit', 'edit')->name('edit');
+            Route::put('/update', 'update')->name('update');
+            Route::post('/remove-avatar', 'removeAvatar')->name('remove-avatar');
+            Route::post('/update-avatar', 'updateAvatar')->name('update-avatar');
+        });
     });
+    
     // Баланс
-    Route::controller(BalanceController::class)->prefix('balance')->name('balance.')->group(function () {
-        Route::get('/', 'showForm')->name('form');
-        Route::post('/process', 'processPayment')->name('process');
-        Route::get('/topup', 'showTopUpForm')->name('topup');
-        Route::post('/topup/process', 'processTopUp')->name('process.topup');
-        Route::get('/gateway/{transaction}', 'paymentGateway')->name('gateway');
+    Route::prefix('balance')->name('balance.')->group(function () {
+        Route::controller(BalanceController::class)->group(function () {
+            Route::get('/', 'showForm')->name('form');
+            Route::post('/process', 'processPayment')->name('process');
+            Route::get('/topup', 'showTopUpForm')->name('topup');
+            Route::post('/topup/process', 'processTopUp')->name('process.topup');
+            Route::get('/gateway/{transaction}', 'paymentGateway')->name('gateway');
+        });
     });
 
     // Чат
-    Route::controller(ChatController::class)->prefix('chat')->name('chat.')->group(function () {
-        Route::post('/send', 'sendMessage')->name('send');
-        Route::get('/messages', 'getMessages')->name('messages');
+    Route::prefix('chat')->name('chat.')->group(function () {
+        Route::controller(ChatController::class)->group(function () {
+            Route::post('/send', 'sendMessage')->name('send');
+            Route::get('/messages', 'getMessages')->name('messages');
+        });
     });
+
+    // Выход
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
 });
 
-// Админка
+// Админские маршруты
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::controller(AdminController::class)->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
@@ -92,16 +105,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/cases', 'cases')->name('cases');
     });
     
-    Route::controller(ChatController::class)->prefix('chat')->name('chat.')->group(function () {
-        Route::get('/', 'getAdminMessages')->name('index');
-        Route::post('/send', 'sendAdminMessage')->name('send');
+    Route::prefix('chat')->name('chat.')->group(function () {
+        Route::controller(ChatController::class)->group(function () {
+            Route::get('/', 'getAdminMessages')->name('index');
+            Route::post('/send', 'sendAdminMessage')->name('send');
+        });
     });
 });
 
-// React
-Route::get('/react', [ReactController::class, 'index'])->name('react');
-
-// Выход
-Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('logout');
+// React (если нужно)
+Route::get('/react', [ReactController::class, 'index'])
+    ->name('react');

@@ -47,6 +47,12 @@
             margin-top: 2px;
             transition: all 0.5s ease;
         }
+        .error-message {
+            display: none; /* Сначала скрываем сообщения об ошибках */
+            color: #f87171;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
     </style>
 </head>
 
@@ -88,7 +94,17 @@
                 </h2>
             </div>
 
-            <form method="POST" action="{{ route('register') }}" class="space-y-6">
+            <!-- Общие ошибки формы будут отображаться здесь -->
+            <div id="form-errors" class="hidden mb-4 p-3 bg-red-900/30 border border-red-500 rounded-lg text-red-400 text-sm">
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span id="form-error-text"></span>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ route('register') }}" class="space-y-6" id="register-form">
                 @csrf
 
                 <!-- Имя пользователя -->
@@ -109,14 +125,12 @@
                             </svg>
                         </div>
                     </div>
-                    @error('name')
-                        <p class="mt-1 text-sm text-red-400 flex items-center">
-                            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
+                    <div id="name-error" class="error-message flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
 
                 <!-- Email -->
@@ -137,14 +151,12 @@
                             </svg>
                         </div>
                     </div>
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-400 flex items-center">
-                            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
+                    <div id="email-error" class="error-message flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
 
                 <!-- Пароль -->
@@ -171,14 +183,12 @@
                         <span>Средний</span>
                         <span>Сильный</span>
                     </div>
-                    @error('password')
-                        <p class="mt-1 text-sm text-red-400 flex items-center">
-                            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
+                    <div id="password-error" class="error-message flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
 
                 <!-- Подтверждение пароля -->
@@ -199,14 +209,12 @@
                             </svg>
                         </div>
                     </div>
-                    @error('password_confirmation')
-                        <p class="mt-1 text-sm text-red-400 flex items-center">
-                            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
+                    <div id="password_confirmation-error" class="error-message flex items-center">
+                        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span></span>
+                    </div>
                 </div>
 
                 <!-- Checkbox для принятия условий -->
@@ -221,14 +229,12 @@
                         </label>
                     </div>
                 </div>
-                @error('terms')
-                    <p class="mt-1 text-sm text-red-400 flex items-center">
-                        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        {{ $message }}
-                    </p>
-                @enderror
+                <div id="terms-error" class="error-message flex items-center">
+                    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span></span>
+                </div>
 
                 <!-- Кнопка регистрации -->
                 <div class="pt-2">
@@ -299,6 +305,41 @@
             meter.style.background = 'linear-gradient(to right, #ef4444, #f59e0b, #84cc16)';
         }
     }
+
+    // Обработчик для отображения ошибок после отправки формы
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('register-form');
+        
+        form.addEventListener('submit', function(e) {
+            // Скрываем все сообщения об ошибках перед отправкой
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById('form-errors').style.display = 'none';
+        });
+
+        // Проверяем, есть ли ошибки в сессии (если форма была отправлена и вернулась с ошибками)
+        @if(session('errors'))
+            const errors = @json(session('errors')->toArray());
+            
+            // Показываем общие ошибки формы
+            if (errors['form']) {
+                document.getElementById('form-errors').style.display = 'block';
+                document.getElementById('form-error-text').textContent = errors['form'][0];
+            }
+            
+            // Показываем ошибки для каждого поля
+            for (const [field, messages] of Object.entries(errors)) {
+                if (field !== 'form') {
+                    const errorElement = document.getElementById(`${field}-error`);
+                    if (errorElement) {
+                        errorElement.style.display = 'flex';
+                        errorElement.querySelector('span').textContent = messages[0];
+                    }
+                }
+            }
+        @endif
+    });
 </script>
 
 <style>

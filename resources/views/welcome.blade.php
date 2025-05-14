@@ -1453,7 +1453,101 @@ document.addEventListener('DOMContentLoaded', function() {
             updateTrack();
         }
     });
-});
+});<!-- Mobile Menu -->
+<div class="lg:hidden">
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuButton" class="p-2 text-gray-400 hover:text-white focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenuOverlay" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden transition-opacity duration-300">
+        <div class="absolute top-0 right-0 bottom-0 w-4/5 max-w-sm bg-gray-900 shadow-xl transform transition-transform duration-300 translate-x-full" id="mobileMenuPanel">
+            <!-- Close Button -->
+            <div class="flex justify-end p-4">
+                <button id="mobileMenuClose" class="p-2 text-gray-400 hover:text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Menu Items -->
+            <nav class="p-6">
+                <ul class="space-y-6">
+                    <li>
+                        <a href="#features" class="block text-xl text-white hover:text-blue-400 transition" onclick="closeMobileMenu()">Возможности</a>
+                    </li>
+                    <li>
+                        <a href="#demo" class="block text-xl text-white hover:text-blue-400 transition" onclick="closeMobileMenu()">Демонстрация</a>
+                    </li>
+                    <li>
+                        <a href="#protection" class="block text-xl text-white hover:text-blue-400 transition" onclick="closeMobileMenu()">Шифрование</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block text-xl text-white hover:text-blue-400 transition" onclick="closeMobileMenu()">Цены</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block text-xl text-white hover:text-blue-400 transition" onclick="closeMobileMenu()">Контакты</a>
+                    </li>
+                </ul>
+
+                <!-- Auth Buttons -->
+                <div class="mt-12 space-y-4">
+                    <a href="#" class="block w-full px-6 py-3 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition">Войти</a>
+                    <a href="#" class="block w-full px-6 py-3 text-center border border-blue-400 text-blue-400 rounded-lg hover:bg-blue-400 hover:bg-opacity-10 transition">Регистрация</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Анимация меню */
+    #mobileMenuPanel {
+        transition: transform 0.3s ease-out;
+    }
+    
+    #mobileMenuOverlay.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    #mobileMenuOverlay.active #mobileMenuPanel {
+        transform: translateX(0);
+    }
+</style>
+
+<script>
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    
+    function toggleMobileMenu() {
+        mobileMenuOverlay.classList.toggle('hidden');
+        mobileMenuOverlay.classList.toggle('active');
+        document.body.classList.toggle('overflow-hidden');
+    }
+    
+    function closeMobileMenu() {
+        mobileMenuOverlay.classList.add('hidden');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.classList.remove('overflow-hidden');
+    }
+    
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    mobileMenuClose.addEventListener('click', toggleMobileMenu);
+    
+    // Close menu when clicking on overlay (outside menu)
+    mobileMenuOverlay.addEventListener('click', function(e) {
+        if (e.target === mobileMenuOverlay) {
+            toggleMobileMenu();
+        }
+    });
+</script>
 </script><!-- Footer -->
 @include('footer')
 <!-- Scripts -->

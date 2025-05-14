@@ -156,22 +156,7 @@
                 </h2>
             </div>
 
-            <!-- Вывод ошибок -->
-            @if($errors->any())
-                <div class="mb-4 p-4 bg-red-900/50 border border-red-500 text-red-400 rounded-lg font-mono">
-                    <div class="flex items-center">
-                        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        ОШИБКА АУТЕНТИФИКАЦИИ
-                    </div>
-                    <ul class="list-disc list-inside mt-2 text-sm">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            
 
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf

@@ -4,83 +4,63 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 
-class LoginController extends Controller
+class RegisteredUserController extends Controller
 {
-    use AuthenticatesUsers;
-
-    protected $redirectTo = '/profile/edit';
-
-    public function __construct()
+    /**
+     * Отображение страницы регистрации.
+     */
+    public function create(): View
     {
-        $this->middleware('guest')->except('logout');
+        return view('auth.register');
     }
 
-    protected function validateLogin(Request $request)
+    /**
+     * Обработка запроса на регистрацию.
+     */
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            $this->username() => 'required|string|email|max:255',
-            'password' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'terms' => ['accepted'],
         ]);
-    }
 
-    protected function attemptLogin(Request $request)
-    {
-        $user = User::where($this->username(), $request->{$this->username()})->first();
-
-        if (!$user) {
-            Log::warning('Login attempt: user not found', ['email' => $request->email]);
-            return false;
-        }
-
-        if (!$user->is_active) {
-            Log::warning('Login attempt: inactive user', ['user_id' => $user->id]);
-            throw ValidationException::withMessages([
-                $this->username() => ['Ваш аккаунт деактивирован. Обратитесь к администратору.'],
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'user',
+                'is_active' => true,
+                'balance' => 0,
+                'email_verified_at' => now(), // Убрать, если нужна верификация email
             ]);
+
+            event(new Registered($user));
+            Auth::login($user);
+
+            return redirect()->intended(RouteServiceProvider::HOME)
+                ->with('success', 'Регистрация прошла успешно! Добро пожаловать!');
+                
+        } catch (\Exception $e) {
+            Log::error('Registration error: ' . $e->getMessage());
+            
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'registration' => 'Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.'
+                ]);
         }
-
-        $credentials = $this->credentials($request);
-        $remember = $request->filled('remember');
-
-        if ($this->guard()->attempt($credentials, $remember)) {
-            Log::debug('Successful login attempt', ['user_id' => $user->id]);
-            return true;
-        }
-
-        Log::debug('Failed login attempt: invalid credentials', ['user_id' => $user->id]);
-        return false;
-    }
-
-    protected function sendFailedLoginResponse(Request $request)
-    {
-        throw ValidationException::withMessages([
-            $this->username() => [trans('auth.failed')],
-        ]);
-    }
-
-    protected function authenticated(Request $request, User $user)
-    {
-        $user->update([
-            'last_login_at' => now(),
-            'last_login_ip' => $request->ip()
-        ]);
-
-        Log::info('User logged in', [
-            'user_id' => $user->id,
-            'email' => $user->email,
-            'ip' => $request->ip()
-        ]);
-
-        return redirect()->intended($this->redirectPath());
-    }
-
-    public function username()
-    {
-        return 'email';
     }
 }

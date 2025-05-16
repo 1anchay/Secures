@@ -1,42 +1,68 @@
 @extends('layouts.app')
 
+@include('header')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+<div class="min-vh-100 d-flex align-items-center bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-key me-2"></i>{{ __('Reset Password') }}</h4>
+                    </div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    <div class="card-body p-4">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>{{ session('status') }}
+                            </div>
+                        @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
+                        <p class="text-muted mb-4">{{ __('Enter your email address and we will send you a password reset link.') }}</p>
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                        <form method="POST" action="{{ route('password.email') }}" class="needs-validation" novalidate>
+                            @csrf
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control  name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <div class="mb-4">
+                                <label for="email" class="form-label">{{ __('Email Address') }}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
+                                           name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
+                                           placeholder="your@email.com">
+                                </div>
+                                @error('email')
+                                    <div class="invalid-feedback d-block">
+                                        <i class="fas fa-exclamation-circle me-1"></i> {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
 
-                               
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>{{ __('Send Password Reset Link') }}
                                 </button>
                             </div>
+                        </form>
+
+                        <div class="mt-4 text-center">
+                            <a href="{{ route('login') }}" class="text-decoration-none">
+                                <i class="fas fa-arrow-left me-1"></i>{{ __('Back to Login') }}
+                            </a>
                         </div>
-                    </form>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center text-muted">
+                    <small>
+                        <i class="fas fa-lock me-1"></i>{{ __('Your security is important to us. We use encryption to protect your data.') }}
+                    </small>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+@include('footer')
 @endsection

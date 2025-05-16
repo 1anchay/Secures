@@ -107,9 +107,6 @@
         <!-- Герой-секция -->
         <div class="security-card mb-8 overflow-hidden">
             <div class="bg-gradient-to-r from-blue-800 to-indigo-900 p-8 md:p-12 text-center">
-                <div class="flex justify-center mb-6">
-                    <img src="/images/secureshield-logo.png" alt="SecureShield" class="h-16 security-icon" onerror="this.src='https://via.placeholder.com/150x64?text=SecureShield'">
-                </div>
                 <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Аудит безопасности SecureShield</h1>
                 <p class="text-xl text-blue-200 max-w-3xl mx-auto">Комплексная проверка защищенности ваших систем и приложений</p>
             </div>

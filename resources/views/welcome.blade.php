@@ -1130,7 +1130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <!-- Interactive Attack Visualization -->
-<section class="py-20 bg-gray-900 relative overflow-hidden">
+ <section class="py-20 bg-gray-900 relative overflow-hidden">
     <!-- Decorative elements -->
     <div class="absolute inset-0 opacity-5">
         <div class="absolute top-0 left-0 w-full h-full bg-repeat" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNNTAgMEwxMDAgMjVMOTAgNzVMNTAgMTAwTDEwIDc1TDAgMjVMNTAgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmY5ZTAwIiBzdHJva2Utd2lkdGg9IjAuNSIvPjwvc3ZnPg==');"></div>
@@ -1453,7 +1453,8 @@ document.addEventListener('DOMContentLoaded', function() {
             updateTrack();
         }
     });
-});<!-- Mobile Menu -->
+});
+<!-- Mobile Menu -->
 <div class="lg:hidden">
     <!-- Mobile Menu Button -->
     <button id="mobileMenuButton" class="p-2 text-gray-400 hover:text-white focus:outline-none">

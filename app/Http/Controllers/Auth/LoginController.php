@@ -49,9 +49,9 @@ class LoginController extends Controller
     {
         $user = User::where($this->username(), $request->{$this->username()})->first();
 
-        if (!$user || !$user->is_active) {  // Проверьте поле is_active в таблице
-            return false;
-        }
+        if (!$user || ($user->is_active !== null && !$user->is_active)) {
+    return false;
+}
 
         return $this->guard()->attempt(
             $this->credentials($request),

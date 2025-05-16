@@ -27,15 +27,11 @@
                                 <label for="email" class="form-label">{{ __('Email Address') }}</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
+                                    <input id="email" type="email" 
                                            name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
                                            placeholder="your@email.com">
                                 </div>
-                                @error('email')
-                                    <div class="invalid-feedback d-block">
-                                        <i class="fas fa-exclamation-circle me-1"></i> {{ $message }}
-                                    </div>
-                                @enderror
+                               
                             </div>
 
                             <div class="d-grid">

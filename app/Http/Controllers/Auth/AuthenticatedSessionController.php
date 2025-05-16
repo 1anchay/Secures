@@ -20,27 +20,24 @@ class AuthenticatedSessionController extends Controller
      * Обработка запроса на вход.
      */
     public function store(Request $request)
-    {
-        // Валидация данных
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    $this->validateLogin($request);
 
-        // Попытка аутентификации
-        if (Auth::attempt($request->only('email', 'password'))) {
-            // Регенирация сессии после успешного входа
-            $request->session()->regenerate();
-
-            // Редирект на домашнюю страницу или страницу, на которую был перенаправлен ранее
-            return redirect()->intended(route('home'));
-        }
-
-        // Возврат с ошибками, если аутентификация не удалась
-        return back()->withErrors([
-            'email' => 'Указанные данные не совпадают с нашими записями.',
-        ]);
+    if ($this->hasTooManyLoginAttempts($request)) {
+        $this->fireLockoutEvent($request);
+        return $this->sendLockoutResponse($request);
     }
+
+    if ($this->attemptLogin($request)) {
+        $request->session()->regenerate();
+        $this->clearLoginAttempts($request);
+        
+        return $this->authenticated($request, $this->guard()->user());
+    }
+
+    $this->incrementLoginAttempts($request);
+    return $this->sendFailedLoginResponse($request);
+}
 
     /**
      * Завершение сессии (выход).

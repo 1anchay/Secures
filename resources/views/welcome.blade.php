@@ -1137,29 +1137,31 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="absolute -right-32 -top-32 w-96 h-96 rounded-full bg-red-600/10 blur-3xl"></div>
     <div class="absolute -left-32 -bottom-32 w-96 h-96 rounded-full bg-yellow-600/10 blur-3xl"></div>
+    
+        <section class="py-16 px-4 bg-gray-900 text-white">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4">Интерактивная демонстрация защиты</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">Увидьте, как SecureShield защищает ваш сайт от реальных угроз</p>
+        </div>
 
-    <div class="max-w-7xl mx-auto px-6 relative z-10">
-        <h2 class="text-3xl text-center font-bold mb-4">
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-yellow-400">Как хакеры атакуют сайты</span>
-        </h2>
-        <p class="text-xl text-center text-gray-400 mb-16 max-w-3xl mx-auto">Интерактивная демонстрация уязвимостей без защиты</p>
-
-        <!-- Interactive Worm Visualization -->
+        <!-- Interactive Visualization -->
         <div class="relative h-96 bg-gray-800/50 rounded-2xl border-2 border-dashed border-red-400/30 overflow-hidden">
-            <!-- Website Visualization -->
+            <!-- Website Visualization with Health Bar -->
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-2xl flex items-center justify-center z-10" id="website">
+                <div class="website-health-bar hidden absolute -top-5 left-0 right-0 h-3 bg-gray-700 rounded-full overflow-hidden">
+                    <div class="health-progress h-full bg-green-500 transition-all duration-500"></div>
+                </div>
                 <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
                 </svg>
             </div>
 
-            <!-- Worm Elements -->
-            <div class="absolute top-0 left-0 w-full h-full" id="worm-container">
-                <!-- Worm segments will be added here by JavaScript -->
-            </div>
+            <!-- Attack Effects Container -->
+            <div class="absolute inset-0 attack-effects-container"></div>
 
             <!-- Attack Info Panel -->
-            <div class="absolute bottom-4 left-4 right-4 bg-gray-900/90 backdrop-blur-sm p-4 rounded-lg border border-red-500/30 hidden" id="attack-info">
+            <div class="absolute bottom-4 left-4 right-4 bg-gray-900/90 backdrop-blur-sm p-4 rounded-lg border border-red-500/30 hidden transform transition-all duration-300 opacity-0 translate-y-5" id="attack-info">
                 <h4 class="text-lg font-bold text-white mb-2" id="attack-title">SQL-инъекция</h4>
                 <p class="text-sm text-gray-300 mb-3" id="attack-description">Внедрение вредоносного кода в базы данных через формы ввода</p>
                 <div class="flex items-center text-sm text-red-400">
@@ -1171,33 +1173,36 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <!-- Protection Activated State -->
-<div class="absolute inset-0 bg-blue-500/10 backdrop-blur-sm flex items-center justify-center hidden" id="protection-activated">
-    <div class="text-center p-8 bg-gray-900 rounded-xl border-2 border-blue-500 max-w-md relative overflow-hidden">
-        <!-- Анимация частиц -->
-        <div class="absolute inset-0 particle-container"></div>
-        
-        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
+            <div class="absolute inset-0 bg-blue-500/10 backdrop-blur-sm flex items-center justify-center hidden" id="protection-activated">
+                <div class="text-center p-8 bg-gray-900 rounded-xl border-2 border-blue-500 max-w-md relative z-10 transform transition-all duration-500 scale-95 opacity-0">
+                    <!-- Particles -->
+                    <div class="particles absolute inset-0 overflow-hidden rounded-xl">
+                        <div class="particle absolute bg-blue-500 rounded-full"></div>
+                    </div>
+                    
+                    <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-3 relative z-10">Защита активирована!</h3>
+                    <p class="text-gray-300 mb-6 relative z-10">Все атаки были успешно заблокированы системой SecureShield</p>
+                    <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-400 hover:to-blue-500 transition transform hover:scale-105 relative z-10" id="reset-demo">
+                        Запустить демонстрацию снова
+                    </button>
+                </div>
+            </div>
         </div>
-        <h3 class="text-2xl font-bold text-white mb-2 relative z-10">Защита активирована!</h3>
-        <p class="text-gray-300 mb-4 relative z-10">Все атаки были успешно заблокированы системой SecureShield</p>
-        <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition relative z-10 hover:scale-105 transform transition-transform" id="reset-demo">
-            Запустить демонстрацию снова
-        </button>
-    </div>
-</div>
 
         <!-- Controls -->
         <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            <button class="px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-400 hover:to-red-500 transition flex items-center justify-center" id="start-attack">
+            <button class="px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-400 hover:to-red-500 transition flex items-center justify-center transform hover:scale-105 disabled:opacity-50 disabled:pointer-events-none" id="start-attack">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
                 </svg>
                 Запустить хакерскую атаку
             </button>
-            <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-400 hover:to-blue-500 transition flex items-center justify-center" id="activate-protection">
+            <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-400 hover:to-blue-500 transition flex items-center justify-center transform hover:scale-105 disabled:opacity-50 disabled:pointer-events-none" id="activate-protection">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                 </svg>
@@ -1207,19 +1212,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <!-- Stats -->
         <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-red-500/30">
+            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-red-500/30 transform hover:scale-105 transition">
                 <div class="text-4xl font-bold text-red-400 mb-2">76%</div>
                 <div class="text-sm text-gray-400">Сайтов без защиты</div>
             </div>
-            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-yellow-500/30">
+            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-yellow-500/30 transform hover:scale-105 transition">
                 <div class="text-4xl font-bold text-yellow-400 mb-2">3 сек</div>
                 <div class="text-sm text-gray-400">Среднее время взлома</div>
             </div>
-            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-red-500/30">
+            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-red-500/30 transform hover:scale-105 transition">
                 <div class="text-4xl font-bold text-red-400 mb-2">$4M</div>
                 <div class="text-sm text-gray-400">Средний ущерб</div>
             </div>
-            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-blue-500/30">
+            <div class="text-center p-6 bg-gray-800/50 rounded-xl border border-blue-500/30 transform hover:scale-105 transition">
                 <div class="text-4xl font-bold text-blue-400 mb-2">100%</div>
                 <div class="text-sm text-gray-400">Защита SecureShield</div>
             </div>
@@ -1227,215 +1232,318 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
-
-<!-- Protection Activated State -->
-<div class="absolute inset-0 bg-blue-500/10 backdrop-blur-sm flex items-center justify-center hidden" id="protection-activated">
-    <div class="text-center p-8 bg-gray-900 rounded-xl border-2 border-blue-500 max-w-md relative overflow-hidden">
-        <!-- Анимация частиц -->
-        <div class="absolute inset-0 particle-container"></div>
-        
-        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
-        </div>
-        <h3 class="text-2xl font-bold text-white mb-2 relative z-10">Защита активирована!</h3>
-        <p class="text-gray-300 mb-4 relative z-10">Все атаки были успешно заблокированы системой SecureShield</p>
-        <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition relative z-10 hover:scale-105 transform transition-transform" id="reset-demo">
-            Запустить демонстрацию снова
-        </button>
-    </div>
-</div>
-
 <style>
-    /* Анимация частиц для эффекта защиты */
-    .particle-container {
+    /* Health Bar Styles */
+    .website-health-bar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .health-progress {
+        transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    
+    /* Attack Effects */
+    .attack-effects-container {
         pointer-events: none;
+        overflow: hidden;
+    }
+    
+    .attack-particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #ef4444;
+        opacity: 0;
+        transform: scale(0);
+    }
+    
+    /* Damage Effects */
+    @keyframes damage-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+        70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    
+    .damage-effect {
+        animation: damage-pulse 0.8s ease-out;
+    }
+    
+    /* Protection Effects */
+    @keyframes shield-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+        70% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+    
+    .shield-effect {
+        animation: shield-pulse 1.5s ease-out;
+    }
+    
+    /* Particles for Protection Screen */
+    .particles {
+        z-index: 1;
     }
     
     .particle {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background-color: rgba(59, 130, 246, 0.7);
-        border-radius: 50%;
-        animation: float-up 2s ease-in-out infinite;
+        width: 6px;
+        height: 6px;
+        animation: float-up 4s ease-in-out infinite;
     }
     
     @keyframes float-up {
         0% {
-            transform: translateY(0) scale(1);
+            transform: translateY(100px) scale(0.5);
+            opacity: 0;
+        }
+        20% {
             opacity: 1;
         }
         100% {
-            transform: translateY(-100px) scale(0.3);
+            transform: translateY(-100px) scale(1.2);
             opacity: 0;
         }
     }
     
-    /* Анимация здоровья сайта */
-    .website-health {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        width: calc(100% - 20px);
-        height: 10px;
-        background-color: #ef4444;
-        border-radius: 5px;
-        overflow: hidden;
-        display: none;
+    /* Animations */
+    @keyframes fade-in {
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     }
     
-    .health-bar {
-        height: 100%;
-        width: 100%;
-        background-color: #10b981;
-        transition: width 0.5s ease;
-    }
-    
-    /* Анимация повреждения */
-    @keyframes damage-taken {
-        0% { background-color: #3b82f6; }
-        20% { background-color: #ef4444; }
-        100% { background-color: #3b82f6; }
-    }
-    
-    .damage-effect {
-        animation: damage-taken 0.5s ease;
+    .fade-in {
+        animation: fade-in 0.5s ease-out forwards;
     }
 </style>
 
 <script>
-    // Модифицированный код анимации атаки
-    function animateAttack() {
-        if (isAnimating) return;
-        isAnimating = true;
+    document.addEventListener('DOMContentLoaded', function() {
+        const startBtn = document.getElementById('start-attack');
+        const protectBtn = document.getElementById('activate-protection');
+        const resetBtn = document.getElementById('reset-demo');
+        const website = document.getElementById('website');
+        const attackInfo = document.getElementById('attack-info');
+        const protectionActivated = document.getElementById('protection-activated');
+        const effectsContainer = document.querySelector('.attack-effects-container');
+        const healthBar = document.querySelector('.website-health-bar');
+        const healthProgress = document.querySelector('.health-progress');
         
-        // Показываем полоску здоровья
-        const healthBar = document.createElement('div');
-        healthBar.className = 'website-health';
-        healthBar.innerHTML = '<div class="health-bar"></div>';
-        website.appendChild(healthBar);
-        healthBar.style.display = 'block';
+        const attacks = [
+            {
+                title: "SQL-инъекция",
+                description: "Внедрение вредоносного кода в базы данных через формы ввода",
+                stats: "78% сайтов уязвимы к этой атаке",
+                color: "#ef4444"
+            },
+            {
+                title: "XSS-атака",
+                description: "Внедрение вредоносных скриптов через пользовательский ввод",
+                stats: "63% сайтов подвержены XSS",
+                color: "#f59e0b"
+            },
+            {
+                title: "DDoS",
+                description: "Перегрузка сервера массовыми запросами",
+                stats: "Средняя стоимость атаки $40/час",
+                color: "#ec4899"
+            },
+            {
+                title: "Фишинг",
+                description: "Кража учетных данных через поддельные страницы",
+                stats: "91% кибератак начинаются с фишинга",
+                color: "#8b5cf6"
+            }
+        ];
         
-        // Уменьшаем здоровье постепенно
-        const bar = healthBar.querySelector('.health-bar');
+        let currentAttack = 0;
+        let isAnimating = false;
         let health = 100;
         
-        const damageInterval = setInterval(() => {
-            health -= 10;
-            bar.style.width = `${health}%`;
-            website.classList.add('damage-effect');
+        // Create attack particles
+        function createAttackParticles() {
+            effectsContainer.innerHTML = '';
+            const particleCount = 30;
             
-            setTimeout(() => {
-                website.classList.remove('damage-effect');
-            }, 500);
-            
-            if (health <= 0) {
-                clearInterval(damageInterval);
-                healthBar.remove();
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'attack-particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.backgroundColor = attacks[currentAttack].color;
+                particle.style.animation = `float-up ${2 + Math.random() * 3}s ease-in-out ${Math.random() * 0.5}s infinite`;
                 
-                // Показываем информацию об атаке
-                document.getElementById('attack-title').textContent = attacks[currentAttack].title;
-                document.getElementById('attack-description').textContent = attacks[currentAttack].description;
-                document.getElementById('attack-stats').textContent = attacks[currentAttack].stats;
-                attackInfo.classList.remove('hidden');
-                attackInfo.classList.add('fade-in');
+                effectsContainer.appendChild(particle);
                 
-                // Изменяем вид сайта после атаки
-                website.style.background = 'linear-gradient(135deg, #ef4444, #7f1d1d)';
-                website.style.border = '2px dashed #fca5a5';
-                
-                // Включаем кнопку защиты
+                // Animate particle appearance
                 setTimeout(() => {
-                    protectBtn.classList.remove('button-disabled');
-                    isAnimating = false;
-                }, 500);
+                    particle.style.opacity = '0.8';
+                    particle.style.transform = 'scale(1)';
+                    particle.style.transition = 'all 0.5s ease-out';
+                }, i * 50);
             }
-        }, 300);
-    }
-    
-    // Функция активации защиты с частицами
-    function activateProtection() {
-        if (isAnimating) return;
-        isAnimating = true;
-        
-        // Создаем частицы
-        const container = document.querySelector('.particle-container');
-        container.innerHTML = '';
-        
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.bottom = '0';
-            particle.style.animationDelay = `${Math.random() * 1.5}s`;
-            container.appendChild(particle);
         }
         
-        // Показываем сообщение о защите
-        protectionActivated.classList.remove('hidden');
-        protectionActivated.classList.add('fade-in');
+        // Animate attack
+        function animateAttack() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Reset states
+            attackInfo.classList.add('hidden');
+            protectionActivated.classList.add('hidden');
+            startBtn.disabled = true;
+            
+            // Show health bar
+            health = 100;
+            healthBar.classList.remove('hidden');
+            healthProgress.style.width = '100%';
+            healthProgress.style.backgroundColor = '#10B981';
+            
+            // Create particles
+            createAttackParticles();
+            
+            // Start damaging website
+            const damageInterval = setInterval(() => {
+                health -= 5 + Math.random() * 10;
+                if (health < 0) health = 0;
+                
+                healthProgress.style.width = `${health}%`;
+                
+                // Change color based on health
+                if (health < 30) {
+                    healthProgress.style.backgroundColor = '#EF4444';
+                } else if (health < 60) {
+                    healthProgress.style.backgroundColor = '#F59E0B';
+                }
+                
+                // Add damage effect
+                website.classList.add('damage-effect');
+                setTimeout(() => {
+                    website.classList.remove('damage-effect');
+                }, 800);
+                
+                // When health reaches 0
+                if (health <= 0) {
+                    clearInterval(damageInterval);
+                    
+                    // Show attack info
+                    document.getElementById('attack-title').textContent = attacks[currentAttack].title;
+                    document.getElementById('attack-description').textContent = attacks[currentAttack].description;
+                    document.getElementById('attack-stats').textContent = attacks[currentAttack].stats;
+                    attackInfo.classList.remove('hidden');
+                    attackInfo.classList.add('fade-in');
+                    
+                    // Change website appearance
+                    website.style.background = 'linear-gradient(135deg, #ef4444, #7f1d1d)';
+                    website.style.border = '2px dashed #fca5a5';
+                    
+                    // Rotate to next attack
+                    currentAttack = (currentAttack + 1) % attacks.length;
+                    
+                    // Enable protection button
+                    setTimeout(() => {
+                        protectBtn.disabled = false;
+                        isAnimating = false;
+                    }, 500);
+                }
+            }, 500);
+        }
         
-        // Восстанавливаем сайт
-        website.style.background = 'linear-gradient(135deg, #3b82f6, #1d4ed8)';
-        website.style.border = 'none';
+        // Activate protection
+        function activateProtection() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Disable button
+            protectBtn.disabled = true;
+            
+            // Hide attack info
+            attackInfo.classList.add('hidden');
+            
+            // Clear attack effects
+            effectsContainer.innerHTML = '';
+            
+            // Restore website
+            website.style.background = 'linear-gradient(135deg, #3b82f6, #1d4ed8)';
+            website.style.border = 'none';
+            website.classList.add('shield-effect');
+            
+            // Hide health bar
+            setTimeout(() => {
+                healthBar.classList.add('hidden');
+            }, 1000);
+            
+            // Create particles for protection screen
+            createProtectionParticles();
+            
+            // Show protection screen
+            setTimeout(() => {
+                const protectionElement = protectionActivated.querySelector('div');
+                protectionElement.classList.remove('scale-95', 'opacity-0');
+                protectionActivated.classList.remove('hidden');
+                
+                // Enable reset button
+                resetBtn.disabled = false;
+                isAnimating = false;
+            }, 800);
+        }
         
-        // Включаем кнопку сброса
-        setTimeout(() => {
-            resetBtn.classList.remove('button-disabled');
-            isAnimating = false;
-        }, 1000);
-    }
+        // Create protection particles
+        function createProtectionParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = '0';
+                particle.style.opacity = '0';
+                particle.style.animationDelay = `${Math.random() * 2}s`;
+                
+                particlesContainer.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.style.opacity = '0.6';
+                }, 100);
+            }
+        }
+        
+        // Reset demo
+        function resetDemo() {
+            if (isAnimating) return;
+            
+            // Hide protection screen
+            const protectionElement = protectionActivated.querySelector('div');
+            protectionElement.classList.add('scale-95', 'opacity-0');
+            protectionActivated.classList.add('hidden');
+            
+            // Reset website
+            website.style.background = 'linear-gradient(135deg, #3b82f6, #1d4ed8)';
+            website.style.border = 'none';
+            website.style.boxShadow = 'none';
+            
+            // Reset buttons
+            startBtn.disabled = false;
+            protectBtn.disabled = true;
+            resetBtn.disabled = true;
+            
+            // Clear effects
+            effectsContainer.innerHTML = '';
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', animateAttack);
+        protectBtn.addEventListener('click', activateProtection);
+        resetBtn.addEventListener('click', resetDemo);
+        
+        // Initialize
+        protectBtn.disabled = true;
+        resetBtn.disabled = true;
+    });
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const track = document.getElementById('testimonialsTrack');
-    const prevBtn = document.getElementById('prevTestimonial');
-    const nextBtn = document.getElementById('nextTestimonial');
-    const testimonials = document.querySelectorAll('#testimonialsTrack > div');
-    let currentIndex = 0;
-    const testimonialWidth = testimonials[0].offsetWidth;
-    const visibleCount = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
-
-    function updateTrack() {
-        track.style.transform = `translateX(-${currentIndex * testimonialWidth}px)`;
-    }
-
-    nextBtn.addEventListener('click', function() {
-        if (currentIndex < testimonials.length - visibleCount) {
-            currentIndex++;
-            updateTrack();
-        }
-    });
-
-    prevBtn.addEventListener('click', function() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateTrack();
-        }
-    });
-
-    // Auto-rotate testimonials
-    setInterval(function() {
-        if (currentIndex < testimonials.length - visibleCount) {
-            currentIndex++;
-        } else {
-            currentIndex = 0;
-        }
-        updateTrack();
-    }, 5000);
-
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        const newVisibleCount = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
-        if (currentIndex > testimonials.length - newVisibleCount) {
-            currentIndex = Math.max(0, testimonials.length - newVisibleCount);
-            updateTrack();
-        }
-    });
-});
 <!-- Mobile Menu -->
 <div class="lg:hidden">
     <!-- Mobile Menu Button -->

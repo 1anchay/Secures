@@ -1227,255 +1227,168 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
+
+<!-- Protection Activated State -->
+<div class="absolute inset-0 bg-blue-500/10 backdrop-blur-sm flex items-center justify-center hidden" id="protection-activated">
+    <div class="text-center p-8 bg-gray-900 rounded-xl border-2 border-blue-500 max-w-md relative overflow-hidden">
+        <!-- Анимация частиц -->
+        <div class="absolute inset-0 particle-container"></div>
+        
+        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-2 relative z-10">Защита активирована!</h3>
+        <p class="text-gray-300 mb-4 relative z-10">Все атаки были успешно заблокированы системой SecureShield</p>
+        <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition relative z-10 hover:scale-105 transform transition-transform" id="reset-demo">
+            Запустить демонстрацию снова
+        </button>
+    </div>
+</div>
+
+<style>
+    /* Анимация частиц для эффекта защиты */
+    .particle-container {
+        pointer-events: none;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background-color: rgba(59, 130, 246, 0.7);
+        border-radius: 50%;
+        animation: float-up 2s ease-in-out infinite;
+    }
+    
+    @keyframes float-up {
+        0% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100px) scale(0.3);
+            opacity: 0;
+        }
+    }
+    
+    /* Анимация здоровья сайта */
+    .website-health {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        height: 10px;
+        background-color: #ef4444;
+        border-radius: 5px;
+        overflow: hidden;
+        display: none;
+    }
+    
+    .health-bar {
+        height: 100%;
+        width: 100%;
+        background-color: #10b981;
+        transition: width 0.5s ease;
+    }
+    
+    /* Анимация повреждения */
+    @keyframes damage-taken {
+        0% { background-color: #3b82f6; }
+        20% { background-color: #ef4444; }
+        100% { background-color: #3b82f6; }
+    }
+    
+    .damage-effect {
+        animation: damage-taken 0.5s ease;
+    }
+</style>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const startBtn = document.getElementById('start-attack');
-        const protectBtn = document.getElementById('activate-protection');
-        const resetBtn = document.getElementById('reset-demo');
-        const wormContainer = document.getElementById('worm-container');
-        const website = document.getElementById('website');
-        const attackInfo = document.getElementById('attack-info');
-        const protectionActivated = document.getElementById('protection-activated');
+    // Модифицированный код анимации атаки
+    function animateAttack() {
+        if (isAnimating) return;
+        isAnimating = true;
         
-        const attacks = [
-            {
-                title: "SQL-инъекция",
-                description: "Внедрение вредоносного кода в базы данных через формы ввода",
-                stats: "78% сайтов уязвимы к этой атаке",
-                color: "#ef4444"
-            },
-            {
-                title: "XSS-атака",
-                description: "Внедрение вредоносных скриптов через пользовательский ввод",
-                stats: "63% сайтов подвержены XSS",
-                color: "#f59e0b"
-            },
-            {
-                title: "DDoS",
-                description: "Перегрузка сервера массовыми запросами",
-                stats: "Средняя стоимость атаки $40/час",
-                color: "#ec4899"
-            },
-            {
-                title: "Фишинг",
-                description: "Кража учетных данных через поддельные страницы",
-                stats: "91% кибератак начинаются с фишинга",
-                color: "#8b5cf6"
-            }
-        ];
+        // Показываем полоску здоровья
+        const healthBar = document.createElement('div');
+        healthBar.className = 'website-health';
+        healthBar.innerHTML = '<div class="health-bar"></div>';
+        website.appendChild(healthBar);
+        healthBar.style.display = 'block';
         
-        let currentAttack = 0;
-        let wormSegments = [];
-        let isAnimating = false;
+        // Уменьшаем здоровье постепенно
+        const bar = healthBar.querySelector('.health-bar');
+        let health = 100;
         
-        // Create worm segments
-        function createWorm() {
-            wormContainer.innerHTML = '';
-            wormSegments = [];
+        const damageInterval = setInterval(() => {
+            health -= 10;
+            bar.style.width = `${health}%`;
+            website.classList.add('damage-effect');
             
-            const segmentCount = 10;
-            for (let i = 0; i < segmentCount; i++) {
-                const segment = document.createElement('div');
-                segment.className = 'worm-segment';
-                segment.style.left = `${-60 + i * 8}px`;
-                segment.style.top = `${20 + Math.random() * 60}%`;
-                segment.style.opacity = '0';
-                segment.style.transform = 'scale(0.3)';
-                segment.style.transition = `opacity 0.3s ease ${i*0.05}s, transform 0.3s ease ${i*0.05}s`;
-                
-                if (i === segmentCount - 1) {
-                    segment.innerHTML = `
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-                        </svg>
-                    `;
-                }
-                
-                wormContainer.appendChild(segment);
-                wormSegments.push(segment);
-            }
-            
-            // Show worm segments with delay
             setTimeout(() => {
-                wormSegments.forEach(segment => {
-                    segment.style.opacity = '1';
-                    segment.style.transform = 'scale(1)';
-                    segment.classList.add('worm-animation');
-                });
-            }, 100);
-        }
-        
-        // Animate worm attack
-        function animateWormAttack() {
-            if (isAnimating) return;
-            isAnimating = true;
-            
-            // Disable buttons during animation
-            startBtn.classList.add('button-disabled');
-            protectBtn.classList.add('button-disabled');
-            
-            // Reset any existing states
-            attackInfo.classList.add('hidden');
-            protectionActivated.classList.add('hidden');
-            website.style.boxShadow = 'none';
-            
-            // Create new worm
-            createWorm();
-            
-            // Animate worm moving to website
-            setTimeout(() => {
-                const websiteRect = website.getBoundingClientRect();
-                const containerRect = wormContainer.getBoundingClientRect();
-                
-                wormSegments.forEach((segment, index) => {
-                    const targetX = websiteRect.left - containerRect.left + websiteRect.width/2 - 12;
-                    const targetY = websiteRect.top - containerRect.top + websiteRect.height/2 - 12;
-                    
-                    segment.style.transition = `left 1.2s cubic-bezier(0.4, 0, 0.2, 1) ${index*0.08}s, top 1.2s cubic-bezier(0.4, 0, 0.2, 1) ${index*0.08}s`;
-                    segment.style.left = `${targetX}px`;
-                    segment.style.top = `${targetY}px`;
-                });
-                
-                // When worm reaches website
-                setTimeout(() => {
-                    // Show attack info
-                    document.getElementById('attack-title').textContent = attacks[currentAttack].title;
-                    document.getElementById('attack-description').textContent = attacks[currentAttack].description;
-                    document.getElementById('attack-stats').textContent = attacks[currentAttack].stats;
-                    attackInfo.classList.remove('hidden');
-                    attackInfo.classList.add('fade-in');
-                    
-                    // Change website to attacked state
-                    website.style.background = 'linear-gradient(135deg, #ef4444, #7f1d1d)';
-                    website.style.border = '2px dashed #fca5a5';
-                    website.classList.add('shake-effect');
-                    
-                    // Rotate to next attack type
-                    currentAttack = (currentAttack + 1) % attacks.length;
-                    
-                    // Enable protection button
-                    setTimeout(() => {
-                        protectBtn.classList.remove('button-disabled');
-                        isAnimating = false;
-                        website.classList.remove('shake-effect');
-                    }, 1000);
-                    
-                }, 1200);
+                website.classList.remove('damage-effect');
             }, 500);
-        }
-        
-        // Activate protection
-        function activateProtection() {
-            if (isAnimating) return;
-            isAnimating = true;
             
-            // Disable buttons during animation
-            protectBtn.classList.add('button-disabled');
-            
-            // Hide attack info
-            attackInfo.classList.add('hidden');
-            
-            // Apply shield effect
-            website.classList.add('shield-effect');
-            website.style.background = 'linear-gradient(135deg, #10b981, #047857)';
-            website.style.border = '2px solid #6ee7b7';
-            website.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.6)';
-            
-            // Animate worm destruction
-            wormSegments.forEach((segment, index) => {
+            if (health <= 0) {
+                clearInterval(damageInterval);
+                healthBar.remove();
+                
+                // Показываем информацию об атаке
+                document.getElementById('attack-title').textContent = attacks[currentAttack].title;
+                document.getElementById('attack-description').textContent = attacks[currentAttack].description;
+                document.getElementById('attack-stats').textContent = attacks[currentAttack].stats;
+                attackInfo.classList.remove('hidden');
+                attackInfo.classList.add('fade-in');
+                
+                // Изменяем вид сайта после атаки
+                website.style.background = 'linear-gradient(135deg, #ef4444, #7f1d1d)';
+                website.style.border = '2px dashed #fca5a5';
+                
+                // Включаем кнопку защиты
                 setTimeout(() => {
-                    segment.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-                    segment.style.opacity = '0';
-                    segment.style.transform = 'translateY(30px) rotate(45deg) scale(0.2)';
-                }, index * 50);
-            });
-            
-            // Show protection message
-            setTimeout(() => {
-                protectionActivated.classList.remove('hidden');
-                protectionActivated.classList.add('fade-in');
-                isAnimating = false;
-                resetBtn.classList.remove('button-disabled');
-            }, 1000);
+                    protectBtn.classList.remove('button-disabled');
+                    isAnimating = false;
+                }, 500);
+            }
+        }, 300);
+    }
+    
+    // Функция активации защиты с частицами
+    function activateProtection() {
+        if (isAnimating) return;
+        isAnimating = true;
+        
+        // Создаем частицы
+        const container = document.querySelector('.particle-container');
+        container.innerHTML = '';
+        
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.bottom = '0';
+            particle.style.animationDelay = `${Math.random() * 1.5}s`;
+            container.appendChild(particle);
         }
         
-        // Reset demo
-        function resetDemo() {
-            if (isAnimating) return;
-            
-            // Hide protection message
-            protectionActivated.classList.add('hidden');
-            
-            // Reset website appearance
-            website.style.background = 'linear-gradient(135deg, #3b82f6, #1d4ed8)';
-            website.style.border = 'none';
-            website.style.boxShadow = 'none';
-            
-            // Re-enable attack button
-            startBtn.classList.remove('button-disabled');
-            
-            // Create new worm in initial position
-            createWorm();
-        }
+        // Показываем сообщение о защите
+        protectionActivated.classList.remove('hidden');
+        protectionActivated.classList.add('fade-in');
         
-        // Event listeners
-        startBtn.addEventListener('click', animateWormAttack);
-        protectBtn.addEventListener('click', activateProtection);
-        resetBtn.addEventListener('click', resetDemo);
+        // Восстанавливаем сайт
+        website.style.background = 'linear-gradient(135deg, #3b82f6, #1d4ed8)';
+        website.style.border = 'none';
         
-        // Initialize
-        createWorm();
-        resetBtn.classList.add('button-disabled');
-    });
-
-    // Testimonials code
-    document.addEventListener('DOMContentLoaded', function() {
-        const track = document.getElementById('testimonialsTrack');
-        const prevBtn = document.getElementById('prevTestimonial');
-        const nextBtn = document.getElementById('nextTestimonial');
-        const testimonials = document.querySelectorAll('#testimonialsTrack > div');
-        let currentIndex = 0;
-        const testimonialWidth = testimonials[0].offsetWidth;
-        const visibleCount = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
-
-        function updateTrack() {
-            track.style.transform = `translateX(-${currentIndex * testimonialWidth}px)`;
-        }
-
-        nextBtn.addEventListener('click', function() {
-            if (currentIndex < testimonials.length - visibleCount) {
-                currentIndex++;
-                updateTrack();
-            }
-        });
-
-        prevBtn.addEventListener('click', function() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateTrack();
-            }
-        });
-
-        // Auto-rotate testimonials
-        setInterval(function() {
-            if (currentIndex < testimonials.length - visibleCount) {
-                currentIndex++;
-            } else {
-                currentIndex = 0;
-            }
-            updateTrack();
-        }, 5000);
-
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const newVisibleCount = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
-            if (currentIndex > testimonials.length - newVisibleCount) {
-                currentIndex = Math.max(0, testimonials.length - newVisibleCount);
-                updateTrack();
-            }
-        });
-    });
+        // Включаем кнопку сброса
+        setTimeout(() => {
+            resetBtn.classList.remove('button-disabled');
+            isAnimating = false;
+        }, 1000);
+    }
 </script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('testimonialsTrack');

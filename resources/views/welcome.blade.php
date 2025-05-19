@@ -1171,21 +1171,23 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <!-- Protection Activated State -->
-            <div class="absolute inset-0 bg-blue-500/10 flex items-center justify-center hidden" id="protection-activated">
-                <div class="text-center p-8 bg-gray-900 rounded-xl border-2 border-blue-500 max-w-md">
-                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Защита активирована!</h3>
-                    <p class="text-gray-300 mb-4">Все атаки были успешно заблокированы системой SecureShield</p>
-                    <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition" id="reset-demo">
-                        Запустить демонстрацию снова
-                    </button>
-                </div>
-            </div>
+<div class="absolute inset-0 bg-blue-500/10 backdrop-blur-sm flex items-center justify-center hidden" id="protection-activated">
+    <div class="text-center p-8 bg-gray-900 rounded-xl border-2 border-blue-500 max-w-md relative overflow-hidden">
+        <!-- Анимация частиц -->
+        <div class="absolute inset-0 particle-container"></div>
+        
+        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
         </div>
+        <h3 class="text-2xl font-bold text-white mb-2 relative z-10">Защита активирована!</h3>
+        <p class="text-gray-300 mb-4 relative z-10">Все атаки были успешно заблокированы системой SecureShield</p>
+        <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition relative z-10 hover:scale-105 transform transition-transform" id="reset-demo">
+            Запустить демонстрацию снова
+        </button>
+    </div>
+</div>
 
         <!-- Controls -->
         <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
@@ -1224,71 +1226,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </section>
-
-<style>
-    .worm-segment {
-        position: absolute;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #ef4444, #f59e0b);
-        box-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
-        z-index: 5;
-        transition: all 0.4s ease-out;
-    }
-    
-    .worm-segment:hover {
-        transform: scale(1.3);
-        z-index: 10;
-    }
-    
-    @keyframes worm-crawl {
-        0% { transform: translateY(0) rotate(0deg); }
-        25% { transform: translateY(-8px) rotate(3deg); }
-        50% { transform: translateY(0) rotate(0deg); }
-        75% { transform: translateY(8px) rotate(-3deg); }
-        100% { transform: translateY(0) rotate(0deg); }
-    }
-    
-    .worm-animation {
-        animation: worm-crawl 1.8s infinite ease-in-out;
-    }
-
-    @keyframes shield-pulse {
-        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-        70% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-    }
-
-    .shield-effect {
-        animation: shield-pulse 1.5s ease-out;
-    }
-
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        20%, 40%, 60%, 80% { transform: translateX(5px); }
-    }
-
-    .shake-effect {
-        animation: shake 0.5s ease-in-out;
-    }
-
-    .fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .button-disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1539,7 +1476,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 </script>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('testimonialsTrack');

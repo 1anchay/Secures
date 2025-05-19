@@ -1137,7 +1137,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="absolute -right-32 -top-32 w-96 h-96 rounded-full bg-red-600/10 blur-3xl"></div>
     <div class="absolute -left-32 -bottom-32 w-96 h-96 rounded-full bg-yellow-600/10 blur-3xl"></div>
-
+    
         <section class="py-16 px-4 bg-gray-900 text-white">
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
@@ -1145,15 +1145,17 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="text-xl text-gray-300 max-w-3xl mx-auto">Увидьте, как SecureShield защищает ваш сайт от реальных угроз</p>
         </div>
 
-        <!-- Website Visualization with Health Bar -->
-<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center z-10" id="website">
-    <div class="website-health-bar hidden absolute -top-5 left-0 right-0 h-3 bg-gray-700 rounded-full overflow-hidden z-20">
-        <div class="health-progress h-full bg-green-500 transition-all duration-500"></div>
-    </div>
-    <svg class="w-16 h-16 text-white z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-    </svg>
-</div>
+        <!-- Interactive Visualization -->
+        <div class="relative h-96 bg-gray-800/50 rounded-2xl border-2 border-dashed border-red-400/30 overflow-hidden">
+            <!-- Website Visualization with Health Bar -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-2xl flex items-center justify-center z-10" id="website">
+                <div class="website-health-bar hidden absolute -top-5 left-0 right-0 h-3 bg-gray-700 rounded-full overflow-hidden">
+                    <div class="health-progress h-full bg-green-500 transition-all duration-500"></div>
+                </div>
+                <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                </svg>
+            </div>
 
             <!-- Attack Effects Container -->
             <div class="absolute inset-0 attack-effects-container"></div>
@@ -1171,25 +1173,36 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <!-- Protection Activated State -->
-            <div class="absolute inset-0 bg-blue-500/10 backdrop-blur-sm flex items-center justify-center hidden" id="protection-activated">
-                <div class="text-center p-8 bg-gray-900 rounded-xl border-2 border-blue-500 max-w-md relative z-10 transform transition-all duration-500 scale-95 opacity-0">
-                    <!-- Particles -->
-                    <div class="particles absolute inset-0 overflow-hidden rounded-xl">
-                        <div class="particle absolute bg-blue-500 rounded-full"></div>
-                    </div>
-                    
-                    <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-3xl font-bold text-white mb-3 relative z-10">Защита активирована!</h3>
-                    <p class="text-gray-300 mb-6 relative z-10">Все атаки были успешно заблокированы системой SecureShield</p>
-                    <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-400 hover:to-blue-500 transition transform hover:scale-105 relative z-10" id="reset-demo">
-                        Запустить демонстрацию снова
-                    </button>
-                </div>
-            </div>
+<div class="fixed inset-0 bg-blue-500/20 backdrop-blur-md flex items-center justify-center hidden" id="protection-activated" style="z-index: 9999;">
+    <div class="text-center p-8 bg-gray-900/95 rounded-xl border-2 border-blue-500 max-w-md relative z-50 transform transition-all duration-500 scale-95 opacity-0 shadow-2xl">
+        <!-- Animated particles background -->
+        <div class="particles absolute inset-0 overflow-hidden rounded-xl -z-10">
+            <div class="particle absolute bg-blue-500 rounded-full animate-pulse"></div>
+            <div class="particle absolute bg-blue-400 rounded-full animate-pulse"></div>
+            <div class="particle absolute bg-blue-300 rounded-full animate-pulse"></div>
+        </div>
+        
+        <!-- Shield icon with glow -->
+        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 relative z-50 shadow-lg shadow-blue-500/30">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+        </div>
+        
+        <!-- Content -->
+        <h3 class="text-3xl font-bold text-white mb-3 relative z-50 bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
+            Защита активирована!
+        </h3>
+        <p class="text-gray-200 mb-6 relative z-50 text-lg">
+            Все атаки были успешно заблокированы системой SecureShield
+        </p>
+        
+        <!-- Reset button -->
+        <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-400 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 relative z-50 shadow-md hover:shadow-blue-500/40 active:scale-95" id="reset-demo">
+            Запустить демонстрацию снова
+        </button>
+    </div>
+</div>
         </div>
 
         <!-- Controls -->

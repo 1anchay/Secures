@@ -1137,7 +1137,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="absolute -right-32 -top-32 w-96 h-96 rounded-full bg-red-600/10 blur-3xl"></div>
     <div class="absolute -left-32 -bottom-32 w-96 h-96 rounded-full bg-yellow-600/10 blur-3xl"></div>
-    
+
         <section class="py-16 px-4 bg-gray-900 text-white">
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
@@ -1145,17 +1145,15 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="text-xl text-gray-300 max-w-3xl mx-auto">Увидьте, как SecureShield защищает ваш сайт от реальных угроз</p>
         </div>
 
-        <!-- Interactive Visualization -->
-        <div class="relative h-96 bg-gray-800/50 rounded-2xl border-2 border-dashed border-red-400/30 overflow-hidden">
-            <!-- Website Visualization with Health Bar -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-2xl flex items-center justify-center z-10" id="website">
-                <div class="website-health-bar hidden absolute -top-5 left-0 right-0 h-3 bg-gray-700 rounded-full overflow-hidden">
-                    <div class="health-progress h-full bg-green-500 transition-all duration-500"></div>
-                </div>
-                <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-                </svg>
-            </div>
+        <!-- Website Visualization with Health Bar -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center z-10" id="website">
+    <div class="website-health-bar hidden absolute -top-5 left-0 right-0 h-3 bg-gray-700 rounded-full overflow-hidden z-20">
+        <div class="health-progress h-full bg-green-500 transition-all duration-500"></div>
+    </div>
+    <svg class="w-16 h-16 text-white z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+    </svg>
+</div>
 
             <!-- Attack Effects Container -->
             <div class="absolute inset-0 attack-effects-container"></div>

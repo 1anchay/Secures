@@ -1172,9 +1172,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
 
-            <!-- Protection Activated State -->
+           <!-- Protection Activated State -->
 <div class="fixed inset-0 bg-blue-500/20 backdrop-blur-md flex items-center justify-center hidden" id="protection-activated" style="z-index: 9999;">
     <div class="text-center p-8 bg-gray-900/95 rounded-xl border-2 border-blue-500 max-w-md relative z-50 transform transition-all duration-500 scale-95 opacity-0 shadow-2xl">
+        <!-- Close button -->
+        <button class="absolute top-3 right-3 p-1 text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none" id="close-protection">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
         <!-- Animated particles background -->
         <div class="particles absolute inset-0 overflow-hidden rounded-xl -z-10">
             <div class="particle absolute bg-blue-500 rounded-full animate-pulse"></div>
@@ -1330,6 +1337,9 @@ document.addEventListener('DOMContentLoaded', function() {
 </style>
 
 <script>
+    document.getElementById('close-protection')?.addEventListener('click', function() {
+    document.getElementById('protection-activated').classList.add('hidden');
+});
     document.addEventListener('DOMContentLoaded', function() {
         const startBtn = document.getElementById('start-attack');
         const protectBtn = document.getElementById('activate-protection');

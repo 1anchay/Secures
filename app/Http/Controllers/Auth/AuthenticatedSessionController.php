@@ -25,49 +25,44 @@ class AuthenticatedSessionController extends Controller
      * Обработка запроса на вход.
      */
     public function store(Request $request)
-    {
-        $this->validateLogin($request);
+{
+    $testEmail = 'test@example.com';
+    $testPassword = '123456';
 
-        $testEmail = 'test@example.com';
-        $testPassword = '123456';
+    // Сначала проверка на тестового пользователя
+    if ($request->email === $testEmail && $request->password === $testPassword) {
+        $fakeUser = new User([
+            'id' => 999999,
+            'name' => 'Тестовый Пользователь',
+            'email' => $testEmail,
+            'email_verified_at' => now(),
+        ]);
+        $fakeUser->setRememberToken(Str::random(10));
+        $fakeUser->exists = true;
 
-        // ======== ТЕСТОВЫЙ ВХОД =========
-        if (
-            $request->email === $testEmail &&
-            $request->password === $testPassword
-        ) {
-            $fakeUser = new User([
-                'id' => 999999, // Уникальный ID
-                'name' => 'Тестовый Пользователь',
-                'email' => $testEmail,
-                'email_verified_at' => now(),
-            ]);
+        Auth::login($fakeUser);
+        session()->regenerate(); // обязательно
 
-            $fakeUser->setRememberToken(Str::random(10));
-            $fakeUser->exists = true;
-
-            Auth::login($fakeUser);
-
-            session()->regenerate();
-
-            return $this->authenticated($request, $fakeUser);
-        }
-
-        // ======== ОГРАНИЧЕНИЯ И ЗАЩИТА =========
-        if ($this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-            return $this->sendLockoutResponse($request);
-        }
-
-        // ======== СТАНДАРТНЫЙ ЛОГИН =========
-        if ($this->attemptLogin($request)) {
-            $this->clearLoginAttempts($request);
-            return $this->authenticated($request, Auth::user());
-        }
-
-        $this->incrementLoginAttempts($request);
-        return $this->sendFailedLoginResponse($request);
+        return redirect()->intended('/profile/edit');
     }
+
+    // Затем обычная логика
+    $this->validateLogin($request);
+
+    if ($this->hasTooManyLoginAttempts($request)) {
+        $this->fireLockoutEvent($request);
+        return $this->sendLockoutResponse($request);
+    }
+
+    if ($this->attemptLogin($request)) {
+        $this->clearLoginAttempts($request);
+        return $this->authenticated($request, Auth::user());
+    }
+
+    $this->incrementLoginAttempts($request);
+    return $this->sendFailedLoginResponse($request);
+}
+
 
     /**
      * Выход из системы.

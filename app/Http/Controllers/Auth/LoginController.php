@@ -49,7 +49,7 @@ class LoginController extends Controller
 {
     
     $testEmail = 'test@example.com';
-    $testPassword = 'secret123';
+    $testPassword = '123456';
 
     if (
         $request->input($this->username()) === $testEmail &&

@@ -26,32 +26,48 @@ class AuthenticatedSessionController extends Controller
      */
    public function store(Request $request)
 {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    $this->validateLogin($request);
 
-    // Тестовые данные
+    // Данные для тестового входа
     $testEmail = 'test@example.com';
     $testPassword = '123456';
 
-    if ($request->email === $testEmail && $request->password === $testPassword) {
-        // Создаём фейкового пользователя без базы данных
-        $fakeUser = new \App\Models\User([
+    // Проверка на тестовые данные
+    if (
+        $request->email === $testEmail &&
+        $request->password === $testPassword
+    ) {
+        // Создаём фейкового пользователя
+        $fakeUser = new User([
+            'id' => 999999, // важно для middleware и авторизации
             'name' => 'Тестовый Пользователь',
             'email' => $testEmail,
+            'email_verified_at' => now(),
         ]);
 
-        // Принудительно логиним
-        auth()->login($fakeUser);
+        $fakeUser->exists = true; // Laravel будет считать, что пользователь "существует"
+        Auth::login($fakeUser);
 
-        return redirect()->intended(route('home'));
+        return $this->authenticated($request, $fakeUser);
     }
 
-    return back()->withErrors([
-        'email' => 'Неверный логин или пароль',
-    ]);
+    // Проверка блокировки по IP
+    if ($this->hasTooManyLoginAttempts($request)) {
+        $this->fireLockoutEvent($request);
+        return $this->sendLockoutResponse($request);
+    }
+
+    // Попытка входа обычным способом (из БД)
+    if ($this->attemptLogin($request)) {
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request, Auth::user());
+    }
+
+    $this->incrementLoginAttempts($request);
+    return $this->sendFailedLoginResponse($request);
 }
+
 
 
     /**

@@ -24,25 +24,35 @@ class AuthenticatedSessionController extends Controller
     /**
      * Обработка запроса на вход.
      */
-    public function store(Request $request)
-    {
-        $this->validateLogin($request);
+   public function store(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if ($this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-            return $this->sendLockoutResponse($request);
-        }
+    // Тестовые данные
+    $testEmail = 'test@example.com';
+    $testPassword = '123456';
 
-        if ($this->attemptLogin($request)) {
-            $request->session()->regenerate();
-            $this->clearLoginAttempts($request);
+    if ($request->email === $testEmail && $request->password === $testPassword) {
+        // Создаём фейкового пользователя без базы данных
+        $fakeUser = new \App\Models\User([
+            'name' => 'Тестовый Пользователь',
+            'email' => $testEmail,
+        ]);
 
-            return $this->authenticated($request, Auth::user());
-        }
+        // Принудительно логиним
+        auth()->login($fakeUser);
 
-        $this->incrementLoginAttempts($request);
-        return $this->sendFailedLoginResponse($request);
+        return redirect()->intended(route('home'));
     }
+
+    return back()->withErrors([
+        'email' => 'Неверный логин или пароль',
+    ]);
+}
+
 
     /**
      * Завершение сессии (выход).
